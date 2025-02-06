@@ -1,0 +1,31 @@
+Options -Multiviews
+RewriteEngine On
+
+# Ensure proper directory routing for HTML files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+
+# Ensure proper directory routing for PHP files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ $1.php [L]
+
+# Handle directory URLs
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.+)/$ $1/index.html [L]
+
+# Handle directory URLs for PHP index files
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.php -f
+RewriteRule ^(.+)/$ $1/index.php [L]
+
+# Redirect URLs without trailing slash to URLs with trailing slash
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*[^/])$ $1/ [L,R=301]
+
+# Prevent directory listing
+Options -Indexes
